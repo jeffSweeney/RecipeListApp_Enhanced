@@ -11,7 +11,8 @@ import SwiftUI
 struct RecipeListApp: App {
     var body: some Scene {
         WindowGroup {
-            RecipeListAppView()
+            // This is the view to our new featured page/tab
+            RecipeTabView()
         }
     }
 }
