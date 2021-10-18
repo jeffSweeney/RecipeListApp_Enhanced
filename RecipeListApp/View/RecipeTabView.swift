@@ -8,11 +8,14 @@
 import SwiftUI
 
 struct RecipeTabView: View {
+    // This is highest common view with subviews that need the RecipeModel View
+    // Model. We'll implement it here and share it as an environment object.
+    private var recipeMode = RecipeModel.instance
+    
     var body: some View {
         TabView {
-            Text("Featured View")
+            FeatureView()
                 .tabItem {
-                    // TODO: Implement featured page
                     Image(systemName: "star.fill")
                     Text("Featured")
                 }
@@ -22,7 +25,7 @@ struct RecipeTabView: View {
                     Image(systemName: "list.bullet")
                     Text("All Recipes")
                 }
-        }
+        }.environmentObject(recipeMode)
     }
 }
 
