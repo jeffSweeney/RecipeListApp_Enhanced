@@ -26,9 +26,14 @@ class DataService {
                 do {
                     let decodedArr = try decoder.decode([Recipe].self, from: data)
                     
-                    // Add a UUID to each parsed object
-                    for obj in decodedArr {
-                        obj.id = UUID()
+                    // Add a UUID to each parsed recipe
+                    for recipe in decodedArr {
+                        recipe.id = UUID()
+                        
+                        // Also need to tag each ingredient in recipe with a UUID
+                        for ingredient in recipe.ingredients {
+                            ingredient.id = UUID()
+                        }
                     }
                     
                     // Assign the parsed json to the result for return
