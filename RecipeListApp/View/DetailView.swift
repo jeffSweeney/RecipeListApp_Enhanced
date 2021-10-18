@@ -25,10 +25,11 @@ struct DetailView: View {
                         .font(.headline)
                         .padding(.bottom, 5)
                     
-                    ForEach(recipe.ingredients, id: \.self) { ingredient in
+                    ForEach(recipe.ingredients) { ingredient in
                         HStack (alignment: .top) {
+                            // TODO: Work amounts / units back into display
                             Text("• ")
-                            Text(ingredient)
+                            Text(ingredient.name)
                         }
                     }
                 }
