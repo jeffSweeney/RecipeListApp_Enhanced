@@ -35,7 +35,6 @@ struct DetailView: View {
                 }
                 .padding(.horizontal, 10)
                 
-                // MARK: Divider
                 Divider()
                 
                 // MARK: Directions
