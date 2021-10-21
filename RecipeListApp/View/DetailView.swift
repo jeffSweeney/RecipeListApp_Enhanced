@@ -11,6 +11,9 @@ struct DetailView: View {
     
     var recipe: Recipe
     
+    @State var servingSizeTag = 2
+    var servingSizeOptions = [2, 4, 6, 8]
+    
     var body: some View {
         ScrollView {
             VStack(alignment: .leading) {
@@ -18,6 +21,20 @@ struct DetailView: View {
                 Image(recipe.image)
                     .resizable()
                     .scaledToFit()
+                
+                // MARK: Servings Picker
+                VStack (alignment: .leading) {
+                    Text("Select your serving size:")
+                        .font(.callout)
+                    Picker("Serving Size", selection: $servingSizeTag) {
+                        ForEach(servingSizeOptions, id: \.self) { servingSize in
+                            Text(String(servingSize)).tag(servingSize)
+                        }
+                    }
+                    .pickerStyle(SegmentedPickerStyle())
+                    .frame(width: 175)
+                }
+                .padding()
                 
                 // MARK: Ingredients
                 VStack (alignment: .leading) {
@@ -28,8 +45,10 @@ struct DetailView: View {
                     ForEach(recipe.ingredients) { ingredient in
                         HStack (alignment: .top) {
                             // TODO: Work amounts / units back into display
+                            let portion = RecipeModel.getPortion(ingredient: ingredient, recipeServings: recipe.servings, targetServings: servingSizeTag)
+                            
                             Text("• ")
-                            Text(ingredient.name)
+                            Text("\(portion) \(ingredient.name.lowercased())")
                         }
                     }
                 }
