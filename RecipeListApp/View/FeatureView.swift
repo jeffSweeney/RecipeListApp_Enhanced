@@ -10,6 +10,7 @@ import SwiftUI
 struct FeatureView: View {
     @EnvironmentObject private var recipeModel: RecipeModel
     @State var presentDetailedView = false
+    @State var tabSelectionIndex = 0
     
     var body: some View {
         VStack (alignment: .leading, spacing: 0) {
@@ -22,7 +23,7 @@ struct FeatureView: View {
             
             // MARK: Dish Card
             GeometryReader { geo in
-                TabView {
+                TabView(selection: $tabSelectionIndex) {
                     ForEach (0 ..< recipeModel.recipes.count) { index in
                         let recipe = recipeModel.recipes[index]
                         // Only show featured recipe(s)
@@ -56,6 +57,7 @@ struct FeatureView: View {
                             .sheet(isPresented: $presentDetailedView) {
                                 DetailView(recipe: recipe)
                             }
+                            .tag(index)
                         }
                     }
                 }
@@ -65,16 +67,28 @@ struct FeatureView: View {
             
             // MARK: Prep Time and Highlights
             VStack (alignment: .leading, spacing: 10) {
-                // TODO: Implement these details based on card being displayed above
+                // Current tabSelectionIndex tells us which recipe is currently
+                // presented.
+                let currentRecipe = recipeModel.recipes[tabSelectionIndex]
                 Text("Preparation Time:")
                     .font(.headline)
-                Text("** IMPLEMENT **")
+                Text(currentRecipe.prepTime)
+                
                 Text("Highlights:")
                     .font(.headline)
-                Text("** IMPLEMENT **")
+                RecipeHighlightsView(highlightsArray: currentRecipe.highlights)
             }
             .padding([.leading, .bottom])
         }
+        .onAppear(perform: firstFeaturedIndex)
+    }
+    
+    func firstFeaturedIndex() {
+        let index = recipeModel.recipes.firstIndex { (recipe) -> Bool in
+            return recipe.featured
+        }
+        
+        tabSelectionIndex = index ?? 0
     }
 }
 
