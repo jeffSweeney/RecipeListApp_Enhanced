@@ -19,7 +19,7 @@ struct FeatureView: View {
                 .bold()
                 .padding(.leading)
                 .padding()
-                .font(.largeTitle)
+                .font(Font.custom("Avenir Heavy", size: 24))
             
             // MARK: Dish Card
             GeometryReader { geo in
@@ -71,11 +71,12 @@ struct FeatureView: View {
                 // presented.
                 let currentRecipe = recipeModel.recipes[tabSelectionIndex]
                 Text("Preparation Time:")
-                    .font(.headline)
+                    .font(Font.custom("Avenir Heavy", size: 16))
                 Text(currentRecipe.prepTime)
+                    .font(Font.custom("Avenir", size: 16))
                 
                 Text("Highlights:")
-                    .font(.headline)
+                    .font(Font.custom("Avenir Heavy", size: 16))
                 RecipeHighlightsView(highlightsArray: currentRecipe.highlights)
             }
             .padding([.leading, .bottom])
