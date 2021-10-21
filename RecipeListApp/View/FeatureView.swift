@@ -9,6 +9,7 @@ import SwiftUI
 
 struct FeatureView: View {
     @EnvironmentObject private var recipeModel: RecipeModel
+    @State var presentDetailedView = false
     
     var body: some View {
         VStack (alignment: .leading, spacing: 0) {
@@ -29,22 +30,32 @@ struct FeatureView: View {
                             // Define our own faded black shadow
                             let shadowColor = Color(.sRGB, red: 0, green: 0, blue: 0, opacity: 0.5)
                             
-                            ZStack {
-                                Rectangle()
-                                    .foregroundColor(.white)
-                                
-                                VStack (spacing: 0) {
-                                    Image(recipe.image)
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fill)
-                                        .clipped()
-                                    Text(recipe.name)
-                                        .padding(5)
+                            // Button to pull up recipe for featured view
+                            Button(action: {
+                                // Presents the detailed view of this recipe
+                                self.presentDetailedView = true
+                            }) {
+                                ZStack {
+                                    Rectangle()
+                                        .foregroundColor(.white)
+                                    
+                                    VStack (spacing: 0) {
+                                        Image(recipe.image)
+                                            .resizable()
+                                            .aspectRatio(contentMode: .fill)
+                                            .clipped()
+                                        Text(recipe.name)
+                                            .padding(5)
+                                    }
                                 }
                             }
+                            .buttonStyle(PlainButtonStyle())
                             .frame(width: geo.size.width/8*7, height: geo.size.height - 100)
                             .cornerRadius(15)
                             .shadow(color: shadowColor, radius: 10, x: -5, y: 5)
+                            .sheet(isPresented: $presentDetailedView) {
+                                DetailView(recipe: recipe)
+                            }
                         }
                     }
                 }
